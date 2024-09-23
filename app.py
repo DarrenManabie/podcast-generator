@@ -78,7 +78,7 @@ def text_to_speech_file(text: str) -> str:
 st.title("Podcast Generator")
 
 # Get user input (optional)
-user_input = st.text_area("Add on any specific tone or instructions for the podcast to be generated", placeholder="E.g. 'Slightly weird and wonky!' or 'Serious TED Talk style'")
+user_input = st.text_area("Add on any specific tone or instructions.", placeholder="E.g. 'Slightly weird and wonky!' or 'Serious TED Talk style'")
 
 if st.button("Save"):
     st.session_state['saved_input'] = user_input
@@ -128,5 +128,5 @@ if uploaded_file is not None:
             # Clean up the audio file after processing
             os.remove(audio_file_path)
 else:
-    st.write("Start by uploading a PDF file as content for the podcast.")
+    st.write("Start by uploading a PDF file as content for your podcast.")
 
