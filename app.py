@@ -48,7 +48,7 @@ def process_pdf(uploaded_file):
 def text_to_speech_file(text: str) -> str:
     # Calling the text_to_speech conversion API with detailed parameters
     response = elevenlabs_client.text_to_speech.convert(
-        voice_id="pqHfZKP75CvOlQylNhV4",  # Bill pre-made voice
+        voice_id=selected_voice_key,  # get the key from the voice_options dictionary
         output_format="mp3_22050_32",
         text=text,
         model_id="eleven_turbo_v2_5",  # use the turbo model for low latency
@@ -78,7 +78,7 @@ def text_to_speech_file(text: str) -> str:
 st.title("Podcast Generator")
 
 # Get user input (optional)
-user_input = st.text_area("Add on any specific tone or instructions.", placeholder="E.g. 'Slightly weird and wonky!' or 'Serious TED Talk style'")
+user_input = st.text_area("Add on any specific tone or instructions.", placeholder="E.g. 'Slightly weird and wonky!' or 'Serious TED Talks style'")
 
 if st.button("Save"):
     st.session_state['saved_input'] = user_input
@@ -91,6 +91,26 @@ saved_input = st.session_state.get('saved_input', '')
 if user_input:
     HARDCODED_QUESTION += "\n" + user_input
 
+# Create a dropdown for user to select a voice
+voice_options = {
+    "Sarah (American, soft, news)": "EXAVITQu4vr4xnSDxMaL",
+    "Laura (American, upbeat, social media)": "FGY2WhTYpPnrIDTdsKH5",
+    "Charlie (Australian, natural, conversational)": "IKne3meq5aSn9XLyUdCD",
+    "George (British, warm, narration)": "JBFqnCBsd6RMkjVDRZzb",
+    "Callum (Transatlantic, intense, characters)": "N2lVS1w4EtoT3dr4eOWO",
+    "River (American, confident, social media)": "SAz9YHcvj6GT2YYXdXww",
+    "Liam (American, friendly, conversational)": "TX3LPaxmHKxFdv7VOQHJ",
+    "Chris (American, casual, conversational)": "iP95p4xoKVk53GoZ742B",
+    "Brian (American, deep, narration)": "nPczCjzI2devNBz1zQrb",
+    "Daniel (British, authoritative, news)": "onwK4e9ZLuTAKqWW03F9",
+    "Lily (British, warm, narration)": "pFZP5JQG7iQjIQuC4Bku",
+    "Bill (American, trustworthy, narration)": "pqHfZKP75CvOlQylNhV4"
+}
+
+selected_voice = st.selectbox("Select a voice for the podcast:", options=list(voice_options.keys()))
+
+# Get the key of the selected voice
+selected_voice_key = voice_options[selected_voice]
 
 # File uploader
 uploaded_file = st.file_uploader("", type="pdf")
@@ -129,4 +149,3 @@ if uploaded_file is not None:
             os.remove(audio_file_path)
 else:
     st.write("Start by uploading a PDF file as content for your podcast.")
-
