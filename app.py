@@ -14,7 +14,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Initialize Gemini model
-model = genai.GenerativeModel('gemini-1.5-pro')
+model = genai.GenerativeModel('gemini-1.5-pro-002')
 
 # Configure ElevenLabs API
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
@@ -24,7 +24,6 @@ elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 HARDCODED_QUESTION = """
                     Generate a podcast script based on the following PDF file. 
                     There must only be one male podcast host and zero guests. 
-                    Do it in the style of a radio show. 
                     Do not include any sound effects. Do not include music. Do not include any other types of effects to the script.
                     Give me the script without any formatting. i.e. do not include Host: or Guest: headers or (starts/ends)
                     """
@@ -68,8 +67,6 @@ def text_to_speech_file(text: str) -> str:
         for chunk in response:
             if chunk:
                 f.write(chunk)
-
-    print(f"{save_file_path}: A new audio file was saved successfully!")
 
     # Return the path of the saved audio file
     return save_file_path
@@ -149,4 +146,3 @@ if uploaded_file is not None:
             os.remove(audio_file_path)
 else:
     st.write("Start by uploading a PDF file as content for your podcast.")
-  
